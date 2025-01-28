@@ -1,4 +1,4 @@
-public class DefaultConverter implements Converter{
+public class DefaultConverter implements Converter {
 
     public final static double COURSEUSD = 102.59;
 

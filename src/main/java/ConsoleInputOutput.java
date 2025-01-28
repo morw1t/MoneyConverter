@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class ConsoleInputOutput implements InputOutput{
+public class ConsoleInputOutput implements InputOutput {
 
     private Scanner scanner;
 

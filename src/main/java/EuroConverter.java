@@ -1,4 +1,4 @@
-public class EuroConverter implements Converter{
+public class EuroConverter implements Converter {
 
     public final static double COURSEEUR = 159.87;
 
