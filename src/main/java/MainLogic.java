@@ -10,20 +10,21 @@ public class MainLogic {
 
     public void start() {
         while (true) {
-            inputOutput.displayMessage("Сколько рублей хотите перевести? (или введите 'exit' для выхода из программы)");
-            String ruble = inputOutput.inputData();
-            if (ruble.equalsIgnoreCase("exit")) {
-                inputOutput.displayMessage("Выход из программы.");
-                break;
-            }
             try {
+                inputOutput.displayMessage("Сколько рублей хотите перевести? (или введите 'exit' для выхода из программы)");
+                String ruble = inputOutput.inputData();
+                if (ruble.equalsIgnoreCase("exit")) {
+                    inputOutput.displayMessage("Выход из программы.");
+                    break;
+                }
                 double rubleValue = Double.parseDouble(ruble);
                 double result = converter.convertMoney(rubleValue);
                 inputOutput.displayMessage("Вы получите " + result);
             } catch (NumberFormatException e) {
                 inputOutput.displayMessage("Ошибка : введите корректное число");
+            } catch (Exception e) {
+                inputOutput.displayMessage("Ошибка: " + e.getMessage());
             }
-
         }
     }
 }
