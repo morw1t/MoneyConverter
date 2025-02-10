@@ -1,4 +1,3 @@
-import java.util.HashMap;
 import java.util.Map;
 
 public class MainLogic {
@@ -6,12 +5,11 @@ public class MainLogic {
     private InputOutput inputOutput;
     private Converter converter;
     private Map<String, Converter> converters;
+    private static final String RESULT_MESSAGE = "Вы получите %.2f %s";
 
-    public MainLogic(InputOutput input) {
+    public MainLogic(InputOutput input, Map<String, Converter> converters) {
         this.inputOutput = input;
-        converters = new HashMap<>();
-        converters.put("USD", new DefaultConverter());
-        converters.put("EUR", new EuroConverter());
+        this.converters = converters;
     }
 
     public void start() {
@@ -21,14 +19,13 @@ public class MainLogic {
 
                 String currencyCode = inputOutput.inputData();
                 if (currencyCode.equalsIgnoreCase("exit")) {
-                    inputOutput.displayMessage("Выход из программы.");
-                    break;
+                    throw new ExitException("Выход из программы.");
                 }
 
-                converter = converters.get(currencyCode.toUpperCase());
-                if (converter == null) {
-                    inputOutput.displayMessage("Нет такой валюты: " + currencyCode);
-                    continue;
+                if (converters.containsKey(currencyCode.toUpperCase())) {
+                    converter = converters.get(currencyCode.toUpperCase());
+                } else {
+                    throw new NoCurrencyException("Нет такой валюты: " + currencyCode);
                 }
 
                 inputOutput.displayMessage("Сколько рублей хотите перевести? (или введите 'exit' для выхода из программы)");
@@ -39,9 +36,17 @@ public class MainLogic {
                 }
                 double rubleValue = Double.parseDouble(ruble);
                 double result = converter.convertMoney(rubleValue);
-                inputOutput.displayMessage("Вы получите " + result + " " + currencyCode.toUpperCase());
+
+                String resultMessage = String.format(RESULT_MESSAGE, result, currencyCode.toUpperCase());
+
+                inputOutput.displayMessage(resultMessage);
             } catch (NumberFormatException e) {
                 inputOutput.displayMessage("Ошибка : введите корректное число");
+            } catch (NoCurrencyException e) {
+                inputOutput.displayMessage(e.getMessage());
+            } catch (ExitException e) {
+                inputOutput.displayMessage(e.getMessage());
+                break;
             } catch (Exception e) {
                 inputOutput.displayMessage("Ошибка: " + e.getMessage());
             }
