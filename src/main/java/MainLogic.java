@@ -27,12 +27,8 @@ public class MainLogic {
                 }
 
                 converter = converters.get(currencyCode.toUpperCase());
-                inputOutput.displayMessage("Сколько рублей хотите перевести? (или введите 'exit' для выхода из программы)");
+                inputOutput.displayMessage("Сколько рублей хотите перевести?");
                 String ruble = inputOutput.inputData();
-                if (ruble.equalsIgnoreCase("exit")) {
-                    inputOutput.displayMessage("Выход из программы.");
-                    break;
-                }
                 double rubleValue = Double.parseDouble(ruble);
                 double result = converter.convertMoney(rubleValue);
 
