@@ -22,12 +22,11 @@ public class MainLogic {
                     throw new ExitException("Выход из программы.");
                 }
 
-                if (converters.containsKey(currencyCode.toUpperCase())) {
-                    converter = converters.get(currencyCode.toUpperCase());
-                } else {
+                if (!converters.containsKey(currencyCode.toUpperCase())) {
                     throw new NoCurrencyException("Нет такой валюты: " + currencyCode);
                 }
 
+                converter = converters.get(currencyCode.toUpperCase());
                 inputOutput.displayMessage("Сколько рублей хотите перевести? (или введите 'exit' для выхода из программы)");
                 String ruble = inputOutput.inputData();
                 if (ruble.equalsIgnoreCase("exit")) {
@@ -37,7 +36,7 @@ public class MainLogic {
                 double rubleValue = Double.parseDouble(ruble);
                 double result = converter.convertMoney(rubleValue);
 
-                String resultMessage = String.format(RESULT_MESSAGE, result, currencyCode.toUpperCase());
+                String resultMessage = RESULT_MESSAGE.formatted(result, currencyCode.toUpperCase());
 
                 inputOutput.displayMessage(resultMessage);
             } catch (NumberFormatException e) {
